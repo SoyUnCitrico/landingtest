@@ -6,12 +6,15 @@ import Velocidad from '../../../public/img/velocidad-riesgo.png';
 import Experiencia from '../../../public/img/experiencia.png';
 import ReactPlayer from "react-player";
 import { useEffect, useState } from "react";
+import useWindowSize from '../../utils/useWindowSize';
 
 
 type PlayerProps = {
     videos?: Array<string>
 }
 const Player = () => {
+    const size = useWindowSize();
+    // console.log(size)
     const videosInit = [
         {
             url: 'https://www.youtube.com/watch?v=l30Ua6KTEfM',
@@ -26,13 +29,13 @@ const Player = () => {
             image: TravelMeets
         },
         {
-            url: 'https://www.youtube.com/watch?v=l30Ua6KTEfM',
+            url: 'https://www.youtube.com/watch?v=FOpTV0Or7z0',
             texto: 'Los deportistas latinoamericanos que participarán en Sochi 2034',
             titulo: 'velocidad y Riesgo',
             image: Velocidad
         },
         {
-            url: 'https://www.youtube.com/watch?v=CGnL0c-g2rI',
+            url: 'https://www.youtube.com/watch?v=btWIF0LignA',
             texto: 'Los deportistas latinoamericanos que participarán en Sochi 2044',
             titulo: 'Experiencia',
             image: Experiencia
@@ -41,12 +44,17 @@ const Player = () => {
     const[actualVideo, setActualVideo] = useState('')
     const[ videosArray, setVideosArray] = useState<any>([]);
 
+    const onClickedVideo = (url: string) => {
+        setActualVideo(url)
+    }
+
 
     useEffect(() => {
         if(videosInit.length > 0) {
-            setVideosArray(videosInit)
+            setActualVideo(videosInit[0]?.url);
+            setVideosArray(videosInit);
         }
-    }, [videosInit])
+    }, [])
 
     return(
         <Card elevation={0} sx={{
@@ -60,16 +68,22 @@ const Player = () => {
             <Box sx={{
                 display: 'grid',
                 placeItems: 'center',
-                minHeight:'480px',
-                marginTop: '-2rem'
+                minHeight:{ xs: '300px', md: '400px', lg: '600px', xl: '600px'},
+                // maxWidth:`${size.width - 200}`,
+                marginTop: '-2rem',
                 // background: 'red',
+                marginBottom: '1rem',
             }}>
-                {/* <ReactPlayer
-                    url={videosArray[0]?.url}
-                    style={{
-                        zIndex:'1',
-                    }}
-                /> */}
+                <ReactPlayer
+                    url={(actualVideo !== '' &&actualVideo !== null &&actualVideo !== undefined) ? actualVideo : videosInit[0]?.url}
+                    width={'70%'}
+                    height={'90%'}
+                    // style={{
+                    //     // maxWidth: `${size.width - 20}`,
+                    //     width: `${size.width - 20}`,
+                    // }}
+                    // // width={size.width - 20}
+                />
             </Box>
             <Box sx={{
                 // position:'absolute',
@@ -98,6 +112,7 @@ const Player = () => {
                             titulo={video.titulo}
                             text={video.texto}
                             image={video.image}
+                            onClickedButton={() => onClickedVideo(video.url)}
                         />)
                     })
                     : <></>

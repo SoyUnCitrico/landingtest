@@ -8,17 +8,18 @@ type PlayerButtonsProps = {
     text: string
     image: string | StaticImageData
     onClickedButton?: Function
+    active?: boolean
 }
 
 const PlayerButtons = (props: PlayerButtonsProps) => {
     const[isActive, setIsActive] = useState(false);
+    const [hovered, setHovered] = useState(false);
 
     return(
         <Box 
         onClick={() => {
-            !!props?.onClickedButton ?
-            props?.onClickedButton()
-            : setIsActive(!isActive)
+            !!props?.onClickedButton ? props?.onClickedButton() : null
+            setIsActive(!isActive)
         }}
         sx={{
             position:'relative',
@@ -26,18 +27,20 @@ const PlayerButtons = (props: PlayerButtonsProps) => {
             backgroundImage: `url(${props.image})`,
             width: {xs:'100px', md: '120px'},
             height: {xs:'100x', md: '120px'},
-            // background: 'red'       
+            // background: 'red'
+
+            cursor: `${ 'pointer'}`
         }}>
             <Box sx={{
                 display:`${isActive ? 'grid' : 'none'}`,
                 // display: 'grid',
                 position:'absolute',
-                left: 'calc(10%)',
-                width: '100px',
-                height: '100px',
+                left: {xs: 'calc(5%)', md:'calc(10%)'},
+                width: {xs: '100px', md:'100px'},
+                height: {xs: '100px', md:'100px'},
                 background: 'red',
                 borderRadius: '50%',
-                fontSize: '0.7rem',
+                fontSize: {xs:'0.6rem', md:'0.7rem'},
                 fontWeight: '700',
                 color: '#f5f5f5',
                 lineHeight: '0.7rem',
